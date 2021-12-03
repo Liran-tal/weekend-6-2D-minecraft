@@ -31,7 +31,6 @@ body {
 
 }
 
-
 /* Tools */
 
 #tool-box,
@@ -44,7 +43,7 @@ body {
 .tool{
 	height: 25%;
 	width: 50%;
-	border: 1px solid black;
+	border: 5px solid black;
 	background-color: blue;
 	background-position: center;
 	background-size: contain;
@@ -66,7 +65,6 @@ body {
 /* Inventory */
 
 .inventory{
-	border: 1px solid rebeccapurple;
 	padding: 5%;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
@@ -104,3 +102,6 @@ body {
 }
 
 
+.in-use{
+	border: 5px solid orange;
+}
