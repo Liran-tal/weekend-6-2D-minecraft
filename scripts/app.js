@@ -81,9 +81,13 @@ const materialArr = [
 // }
 		
 function toolHandler(target) {
-	const tool = target.classList[1];
+	const tool = target.dataset.tool;
+	if (activeTool === target){
+		
+	}
+	toggleSelected(target);
 }
-function markSelected(elm) {
+function toggleSelected(elm) {
 	elm.classList.contains('in-use') ? 
 }
 
