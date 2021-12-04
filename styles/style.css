@@ -9,12 +9,13 @@ body {
 }
 
 #game-board {
-  background-color: rgb(76, 180, 236);
-  width: 100vmin;
+	width: 100vmin;
   height: 100vmin;
+	position: relative;
   display: grid;
   grid-template-columns: repeat(21, 1fr);
   grid-template-rows: repeat(21, 1fr);
+  background-color: rgb(76, 180, 236);
 }
 
 .flex-col{
@@ -84,26 +85,37 @@ body {
 
 .message-box{
 	height: 20%;
-	width: 20%;
-	padding: 5%;
+	width: 30%;
+	padding: 2% 0;
 	position: absolute;
 	top: 50%;
-	left: 50%;
-	transform: translateX(50%);
-	transform: translatey(50%);
+	left: 35%;
+	transform: translatey(-50%);
 	z-index: 1000;
 	border: 3px solid black;
 	background-image: url(../assets/images/wood_plankes_wall.jpg);
 }
 
-.message-box-text{
-	font-size: 20px;
+.message-box-text,
+.message-box-btn{
+	padding: 5px;
+	margin: 5px;
 	color: blanchedalmond;
+	background-image: url(../assets/images/stone_texture.png);
 }
 
+.message-box-text{
+	font-size: 24px;
+}
 
+.message-box-btn {
+	font-size: 20px;
+	cursor: pointer;
+}
 
-
+.hide{
+	display: none;
+}
 
 /* Material Classes */
 

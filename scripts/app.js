@@ -4,10 +4,14 @@ const gameBoard = document.querySelector("#game-board");
 const toolBox = document.querySelector("#tool-box");
 const inventory = document.querySelector('.inventory');
 const INVENTORY_CAPACITY = 8;
+const messageBox = document.querySelector('.message-box');
+const messageBoxText = document.querySelector('.message-box-text');
+const messageBoxButton = document.querySelector('.message-box-btn');
+
 let activeTool = undefined;
 let activeInventoryMaterial = undefined;
 let activeBoardMaterial = undefined;
-let inventoryIndexToUse = 0;
+let inventoryOccupied = 0;
 
 // const gameElements = {
 // 	const gameBoard = document.querySelector("#game-board");
@@ -99,27 +103,40 @@ const materialToolMatch = {
 // }
 
 function gameBoardHandler({target}){
-	const material = target.className;
-	console.log(material);
-	if (activeTool) {
-		if (materialToolMatch[material] === activeTool.dataset.tool) {
-			// TODO: check classList vs className for one element
-			target.classList.remove(material);
-			addToInventory(material);
+	if (target !== gameBoard) {
+		const material = target.dataset.material;
+		if (activeTool) {
+			if (materialToolMatch[material] === activeTool.dataset.tool) {
+				isExtractMaterial(target, material)
+			}
+			else {
+				// TODO: make background flash red
+			}	
 		}
-		else {
-			// TODO: make background flash red
-		}	
+		else if (activeInventoryMaterial && !material) {
+			removeFromInventory(target);
+		}
 	}
-	else if (activeInventoryMaterial && !material) {
-		target.classList.add(activeInventoryMaterial.dataset.material);
+}
+
+function isExtractMaterial(block, material) {
+	if (inventoryOccupied < INVENTORY_CAPACITY) {
+		block.classList.remove(material);
+		block.dataset.material = '';
+		addToInventory(material);
+	}
+	else {
+		messageInventoryFull()
 	}
 }
 
 gameBoard.addEventListener('click', gameBoardHandler);
 
 function toolHandler({target}) {
-	// const tool = target.dataset.tool;
+	if (activeInventoryMaterial) {
+		unSetSelected(activeInventoryMaterial);
+		activeInventoryMaterial = undefined;
+	}
 	if (activeTool) {
 		unSetSelected(activeTool);
 	}
@@ -164,32 +181,40 @@ toolBox.addEventListener('click', toolHandler);
 	// const materialsInventory = [...inventory.children];
 // }
 	
-function handleInventory() {
-
+function handleInventory({target}) {
+	if (activeTool) {
+		unSetSelected(activeTool);
+		activeTool = undefined;
+	}
+	if (activeInventoryMaterial) {
+		unSetSelected(activeInventoryMaterial);
+	}
+	if (target === activeInventoryMaterial){
+		activeInventoryMaterial.dataset.material = undefined;
+		return;
+	}
 	
-	
+	setSelected(target);
+	activeInventoryMaterial = target;
 }
-	// if (activeTool) {
-	// 	unSetSelected(activeTool);
-	// }
-	// if (target === activeTool){
-	// 	activeTool = undefined;
-	// 	return;
-	// }
-	// setSelected(target);
-	// activeTool = target;
+
+inventory.addEventListener('click', handleInventory);
 
 function addToInventory(material) {
 	const first_free_box = materialsInventory.find((item) => {
 		return item.dataset.material === '';
 	})
-	if (first_free_box) {
-		first_free_box.classList.add(material);
-		first_free_box.dataset.material = material;
-	}
-	else{
-		
-	}
+	first_free_box.classList.add(material);
+	first_free_box.dataset.material = material;
+	++ inventoryOccupied;
 }
 
+messageBoxButton.addEventListener('click', () => {
+	messageBox.classList.add('hide');
+})
+
+function messageInventoryFull() {
+	messageBox.classList.remove('hide');
+	messageBoxText.innerText = "Inventory Full";
+}
 
