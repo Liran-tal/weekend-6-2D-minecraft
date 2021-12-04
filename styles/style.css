@@ -120,25 +120,31 @@ body {
 /* Material Classes */
 
 .tree {
-  background: url("../assets/images/css_sprites.png") -110px -110px;
+	background-image: url(../assets/images/minecraft_dark_wood_texture.png);
+	background-size: contain;
 }
 
 .leaves {
-  background: url("../assets/images/css_sprites.png") -210px -10px;
+	background-image: url(../assets/images/minecraft_leaf_texture.jpeg);
+	background-size: contain;
 }
 
 .rock {
-  background: url("../assets/images/css_sprites.png") -10px -110px;
+	background-image: url(../assets/images/minecraft_stone_texture.jpeg);
+	background-size: contain;
 }
 
 .ground {
-  background: url("../assets/images/css_sprites.png") -110px -10px;
+	background-image: url(../assets/images/minecraft_soil_texture.png);
+	background-size: contain;
 }
 
 .grass {
-  background: url("../assets/images/css_sprites.png") -10px -10px;
+	background-image: url(../assets/images/minecraft_soil_texture_with_grass.png);
+	background-size: contain;
 }
 .cloud {
-  background-color: rgb(255, 255, 255);
+	background-image: url(../assets/images/minecraft_cloud_texture.png);
+	background-size: contain;
 }
 

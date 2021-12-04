@@ -55,7 +55,7 @@ const materialToolMatch = {
 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 6, 6, 6, 6, 6, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0],
@@ -107,19 +107,21 @@ function gameBoardHandler({target}){
 		const material = target.dataset.material;
 		if (activeTool) {
 			if (materialToolMatch[material] === activeTool.dataset.tool) {
-				isExtractMaterial(target, material)
+				extractMaterial(target, material)
 			}
 			else {
 				// TODO: make background flash red
 			}	
 		}
 		else if (activeInventoryMaterial && !material) {
-			removeFromInventory(target);
+			target.classList.add(activeInventoryMaterial.dataset.material);
+			target.dataset.material = activeInventoryMaterial.dataset.material;
+			removeFromInventory();
 		}
 	}
 }
 
-function isExtractMaterial(block, material) {
+function extractMaterial(block, material) {
 	if (inventoryOccupied < INVENTORY_CAPACITY) {
 		block.classList.remove(material);
 		block.dataset.material = '';
@@ -198,8 +200,6 @@ function handleInventory({target}) {
 	activeInventoryMaterial = target;
 }
 
-inventory.addEventListener('click', handleInventory);
-
 function addToInventory(material) {
 	const first_free_box = materialsInventory.find((item) => {
 		return item.dataset.material === '';
@@ -208,6 +208,18 @@ function addToInventory(material) {
 	first_free_box.dataset.material = material;
 	++ inventoryOccupied;
 }
+
+function removeFromInventory() {
+	unSetSelected(activeInventoryMaterial);
+	activeInventoryMaterial.classList.remove(activeInventoryMaterial.dataset.material);
+	activeInventoryMaterial.dataset.material = ''
+	activeInventoryMaterial = undefined;
+	-- inventoryOccupied;
+}
+
+
+
+inventory.addEventListener('click', handleInventory);
 
 messageBoxButton.addEventListener('click', () => {
 	messageBox.classList.add('hide');
