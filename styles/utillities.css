@@ -1,0 +1,25 @@
+
+/* Fonts */
+
+@font-face {
+  font-family: minecraft-font;
+  src: url(../assets/fonts/Minecraft.ttf);
+}
+
+/* Style */
+
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: minecraft-font;
+	--text-color: blanchedalmond;
+}
+
+
+.flex-col{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+}

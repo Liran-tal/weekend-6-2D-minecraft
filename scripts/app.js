@@ -110,7 +110,7 @@ function gameBoardHandler({target}){
 				extractMaterial(target, material)
 			}
 			else {
-				// TODO: make background flash red
+				blinkWrongTool(activeTool);
 			}	
 		}
 		else if (activeInventoryMaterial && !material) {
@@ -158,10 +158,16 @@ function unSetSelected(elm) {
 	elm.classList.remove('in-use');
 }
 
+function blinkWrongTool(tool) {
+	setTimeout(() => {
+		tool.style.backgroundColor = 'red';
+	}, 0);
+	setTimeout(function() {
+		tool.style.backgroundColor = 'blue';
+	}, 150);
+}
+
 toolBox.addEventListener('click', toolHandler);
-
-
-
 
 
 		// Build inventory
