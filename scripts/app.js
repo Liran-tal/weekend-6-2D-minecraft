@@ -7,7 +7,7 @@ const INVENTORY_CAPACITY = 8;
 let activeTool = undefined;
 let activeInventoryMaterial = undefined;
 let activeBoardMaterial = undefined;
-
+let inventoryIndexToUse = 0;
 
 // const gameElements = {
 // 	const gameBoard = document.querySelector("#game-board");
@@ -84,9 +84,10 @@ const materialToolMatch = {
 			const currentPositionId = gameBoardMatrix[yIndex][xIndex];
 			// create a block
 			const block = document.createElement("div");
-			// add style by id
+			// add style by id as both class and data
 			if (currentPositionId !== 0) {
 				block.classList.add(materialArr[currentPositionId]);
+				block.dataset.material = materialArr[currentPositionId];
 			}
 			// set data for xIndex and yIndex
 			block.dataset.xIndex = xIndex;
@@ -146,38 +147,49 @@ toolBox.addEventListener('click', toolHandler);
 
 		// Build inventory
 // function createInventory() {
+	const materialsInventory = []; // experimental
 	const num_columns = (INVENTORY_CAPACITY > 15) ? 3 : 2;
 	const num_rows = Math.floor(INVENTORY_CAPACITY / num_columns);
-	for (let i = 1; i <= num_rows; ++ i){
-		for (let j = 1; j <= num_columns; ++ j){
+	for (let yIndex = 1; yIndex <= num_rows; ++ yIndex){
+		for (let xIndex = 1; xIndex <= num_columns; ++ xIndex){
 			const item = document.createElement('div');
 			item.classList.add("inventory-item");
+			item.dataset.material = '';
 			item.dataset.xIndex = xIndex;
 			item.dataset.yIndex = yIndex;
+			materialsInventory.push(item);
 			inventory.append(item);
 		}
 	}
-	const materialsInventory = [...inventory.children];
+	// const materialsInventory = [...inventory.children];
 // }
 	
-function handleInventory(event) {
-	if (activeTool) {
-		unSetSelected(activeTool);
-	}
-	if (target === activeTool){
-		activeTool = undefined;
-		return;
-	}
-	setSelected(target);
-	activeTool = target;
-}
+function handleInventory() {
 
-function addToInventory() {
-	const first_free_box = materialsInventory.find((div) => {
-		div.classList[0] === undefined;
-	})
 	
-	first_free_box.classList.add(target.classList[0]);
+	
+}
+	// if (activeTool) {
+	// 	unSetSelected(activeTool);
+	// }
+	// if (target === activeTool){
+	// 	activeTool = undefined;
+	// 	return;
+	// }
+	// setSelected(target);
+	// activeTool = target;
+
+function addToInventory(material) {
+	const first_free_box = materialsInventory.find((item) => {
+		return item.dataset.material === '';
+	})
+	if (first_free_box) {
+		first_free_box.classList.add(material);
+		first_free_box.dataset.material = material;
+	}
+	else{
+		
+	}
 }
 
 
