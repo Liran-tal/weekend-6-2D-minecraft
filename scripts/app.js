@@ -109,7 +109,7 @@ function gameBoardHandler({target}){
 			if (materialToolMatch[material] === activeTool.dataset.tool) {
 				extractMaterial(target, material)
 			}
-			else {
+			else if (isNotMessageBox(target)){
 				blinkWrongTool(activeTool);
 			}	
 		}
@@ -119,6 +119,12 @@ function gameBoardHandler({target}){
 			removeFromInventory();
 		}
 	}
+}
+
+function isNotMessageBox(target) {
+	return (target !== messageBox &&
+			target !== messageBoxText && 
+			target !== messageBoxButton);
 }
 
 function extractMaterial(block, material) {
@@ -135,19 +141,21 @@ function extractMaterial(block, material) {
 gameBoard.addEventListener('click', gameBoardHandler);
 
 function toolHandler({target}) {
-	if (activeInventoryMaterial) {
-		unSetSelected(activeInventoryMaterial);
-		activeInventoryMaterial = undefined;
+	if (target !== toolBox){
+		if (activeInventoryMaterial) {
+			unSetSelected(activeInventoryMaterial);
+			activeInventoryMaterial = undefined;
+		}
+		if (activeTool) {
+			unSetSelected(activeTool);
+		}
+		if (target === activeTool){
+			activeTool = undefined;
+			return;
+		}
+		setSelected(target);
+		activeTool = target;
 	}
-	if (activeTool) {
-		unSetSelected(activeTool);
-	}
-	if (target === activeTool){
-		activeTool = undefined;
-		return;
-	}
-	setSelected(target);
-	activeTool = target;
 }
 
 function setSelected(elm) {
@@ -190,20 +198,21 @@ toolBox.addEventListener('click', toolHandler);
 // }
 	
 function handleInventory({target}) {
-	if (activeTool) {
-		unSetSelected(activeTool);
-		activeTool = undefined;
-	}
-	if (activeInventoryMaterial) {
-		unSetSelected(activeInventoryMaterial);
-	}
-	if (target === activeInventoryMaterial){
-		activeInventoryMaterial.dataset.material = undefined;
-		return;
-	}
-	
-	setSelected(target);
-	activeInventoryMaterial = target;
+	if (target !== inventory){
+		if (activeTool) {
+			unSetSelected(activeTool);
+			activeTool = undefined;
+		}
+		if (activeInventoryMaterial) {
+			unSetSelected(activeInventoryMaterial);
+		}
+		if (target === activeInventoryMaterial){
+			activeInventoryMaterial.dataset.material = undefined;
+			return;
+		}
+		setSelected(target);
+		activeInventoryMaterial = target;
+	}	
 }
 
 function addToInventory(material) {
