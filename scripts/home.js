@@ -1,6 +1,5 @@
 
 const instructionsButton = document.querySelector('.menu-instructions-btn');
-console.log(document.querySelector("menu-instructions"));
 const instructionsReturnButton = document.querySelector('.instructions-return');
 
 instructionsButton.addEventListener('click', () => {

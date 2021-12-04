@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../styles/normalize.css">
+	<link rel="stylesheet" href="../styles/utillities.css">
+	<link rel="stylesheet" href="../styles/game.css">
+	<script src="../scripts/app.js" defer></script>
+	<title>2d Minecraft Game</title>
+</head>
+<body>
+	<section id="game-board">
+		<div class="message-box flex-col hide">
+			<p class="message-box-text">
+				Inventory is full
+			</p>
+			<button class="message-box-btn">
+				OK
+			</button>
+		</div>
+	</section>
+	<div class="usables-menu flex-col">
+		<section id="tool-box" class="flex-col">
+			<div data-tool="pickaxe" class="tool pickaxe">
+			</div>
+			<div data-tool="shovel" class="tool shovel">
+			</div>
+			<div data-tool="axe" class="tool axe">
+			</div>
+		</section>
+		<section class="inventory">
+		</section>
+	</div>
+</body>
+</html>
