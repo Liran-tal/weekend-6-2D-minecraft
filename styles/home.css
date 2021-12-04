@@ -67,6 +67,10 @@ h1{
 	margin: 3% 0;
 }
 
+.instructions p{
+	margin-top: 2%;
+}
+
 .instructions-return{
 	font-weight: bolder;
 	margin: 3% auto;
