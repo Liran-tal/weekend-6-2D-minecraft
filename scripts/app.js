@@ -1,54 +1,83 @@
 "use strict";
 
-const gameBoard = document.querySelector("#game-board");
-const toolBox = document.querySelector("#tool-box");
-const inventory = document.querySelector('.inventory');
-const INVENTORY_CAPACITY = 8;
-const messageBox = document.querySelector('.message-box');
-const messageBoxText = document.querySelector('.message-box-text');
-const messageBoxButton = document.querySelector('.message-box-btn');
+// const gameBoard = document.querySelector("#game-board");
+// const toolBox = document.querySelector("#tool-box");
+// const inventory = document.querySelector('.inventory');
+// const INVENTORY_CAPACITY = 8;
+// const messageBox = document.querySelector('.message-box');
+// const messageBoxText = document.querySelector('.message-box-text');
+// const messageBoxButton = document.querySelector('.message-box-btn');
 
-let activeTool = undefined;
-let activeInventoryMaterial = undefined;
-let activeBoardMaterial = undefined;
-let inventoryOccupied = 0;
+// let activeTool = undefined;
+// let activeInventoryMaterial = undefined;
+// let activeBoardMaterial = undefined;
+// let inventoryOccupied = 0;
 
-// const gameElements = {
-// 	const gameBoard = document.querySelector("#game-board");
-// 	const inventory = document.querySelector('.inventory');
-// 	const INVENTORY_CAPACITY = 8;
-// 	const materialArr = [
-// 		null,
-// 		"tree",
-// 		"leaves",
-// 		"rock",
-// 		"ground",
-// 		"grass",
-// 		"cloud"
-// 	]
+const gameElements = {
+	gameBoard: document.querySelector("#game-board"),
+	toolBox: document.querySelector("#tool-box"),
+	inventory: document.querySelector('.inventory'),
+	INVENTORY_CAPACITY: 8,
+	messageBox: document.querySelector('.message-box'),
+	messageBoxText: document.querySelector('.message-box-text'),
+	messageBoxButton: document.querySelector('.message-box-btn'),
 	
-// }
+	activeTool: undefined,
+	activeInventoryMaterial: undefined,
+	activeBoardMaterial: undefined,
+	inventoryOccupied: 0,
+	
+	materialArr: [
+		null,
+		"tree",
+		"leaves",
+		"rock",
+		"ground",
+		"grass",
+		"cloud"
+	],
 
-const materialArr = [
-	null,
-	"tree",
-	"leaves",
-	"rock",
-	"ground",
-	"grass",
-	"cloud"
-]
-
-const materialToolMatch = {
-	"tree": 'axe',
-	"leaves": 'axe',
-	"rock": 'pickaxe',
-	"ground": 'shovel',
-	"grass": 'shovel',
-	"cloud": ''
+	materialToolMatch: {
+		"tree": 'axe',
+		"leaves": 'axe',
+		"rock": 'pickaxe',
+		"ground": 'shovel',
+		"grass": 'shovel',
+		"cloud": ''
+	}
 }
 
-// function createMatrix(columns, rows) {
+// const materialArr = [
+// 	null,
+// 	"tree",
+// 	"leaves",
+// 	"rock",
+// 	"ground",
+// 	"grass",
+// 	"cloud"
+// ]
+
+// const materialToolMatch = {
+// 	"tree": 'axe',
+// 	"leaves": 'axe',
+// 	"rock": 'pickaxe',
+// 	"ground": 'shovel',
+// 	"grass": 'shovel',
+// 	"cloud": ''
+// }
+
+function main() {
+	
+	gameBoard.addEventListener('click', gameBoardHandler);
+	toolBox.addEventListener('click', toolHandler);
+	inventory.addEventListener('click', handleInventory);
+
+	messageBoxButton.addEventListener('click', () => {
+		messageBox.classList.add('hide');
+	})
+}
+
+function createMatrix(columns, rows) {
 	const gameBoardMatrix = [
 		//21*21
 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -73,34 +102,27 @@ const materialToolMatch = {
 		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
 		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
 	];
-	// return gameBoardMatrix;
-	// }
+	return gameBoardMatrix;
+}
 	
-	// *** Build game board ***
+	// *** Game board ***
 
-// function setGameBoard(columns, rows) {
-	// gameBoardMatrix = createMatrix(columns, rows);
-	// runs on each row
+function setGameBoard(columns, rows) {
+	gameBoardMatrix = createMatrix(columns, rows);
 	gameBoardMatrix.forEach((row, yIndex) => {
-		// runs on each column
 		row.forEach((column, xIndex) => {
-			// save current position id
 			const currentPositionId = gameBoardMatrix[yIndex][xIndex];
-			// create a block
 			const block = document.createElement("div");
-			// add style by id as both class and data
 			if (currentPositionId !== 0) {
 				block.classList.add(materialArr[currentPositionId]);
 				block.dataset.material = materialArr[currentPositionId];
 			}
-			// set data for xIndex and yIndex
 			block.dataset.xIndex = xIndex;
 			block.dataset.yIndex = yIndex;
-			// add to html
 			gameBoard.appendChild(block);
 		})
 	});
-// }
+}
 
 function gameBoardHandler({target}){
 	if (target !== gameBoard) {
@@ -138,7 +160,7 @@ function extractMaterial(block, material) {
 	}
 }
 
-gameBoard.addEventListener('click', gameBoardHandler);
+// *** Tool Box ***
 
 function toolHandler({target}) {
 	if (target !== toolBox){
@@ -158,14 +180,6 @@ function toolHandler({target}) {
 	}
 }
 
-function setSelected(elm) {
-	elm.classList.add('in-use');
-}
-
-function unSetSelected(elm) {
-	elm.classList.remove('in-use');
-}
-
 function blinkWrongTool(tool) {
 	setTimeout(() => {
 		tool.style.backgroundColor = 'red';
@@ -175,12 +189,10 @@ function blinkWrongTool(tool) {
 	}, 150);
 }
 
-toolBox.addEventListener('click', toolHandler);
+// *** Inventory ***
 
-
-		// Build inventory
-// function createInventory() {
-	const materialsInventory = []; // experimental
+function createInventory() {
+	const materialsInventory = []; 
 	const num_columns = (INVENTORY_CAPACITY > 15) ? 3 : 2;
 	const num_rows = Math.floor(INVENTORY_CAPACITY / num_columns);
 	for (let yIndex = 1; yIndex <= num_rows; ++ yIndex){
@@ -194,8 +206,8 @@ toolBox.addEventListener('click', toolHandler);
 			inventory.append(item);
 		}
 	}
-	// const materialsInventory = [...inventory.children];
-// }
+	const materialsInventory = [...inventory.children];
+}
 	
 function handleInventory({target}) {
 	if (target !== inventory){
@@ -232,16 +244,17 @@ function removeFromInventory() {
 	-- inventoryOccupied;
 }
 
+// *** Miscellaneous ***
 
+function setSelected(elm) {
+	elm.classList.add('in-use');
+}
 
-inventory.addEventListener('click', handleInventory);
-
-messageBoxButton.addEventListener('click', () => {
-	messageBox.classList.add('hide');
-})
+function unSetSelected(elm) {
+	elm.classList.remove('in-use');
+}
 
 function messageInventoryFull() {
 	messageBox.classList.remove('hide');
 	messageBoxText.innerText = "Inventory Full";
 }
-

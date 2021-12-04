@@ -26,6 +26,11 @@ body {
 	margin-left: 50px;
 }
 
+.back-to-menu{
+	margin-top: 5%;
+	cursor: pointer;
+}
+
 /* Tools */
 
 #tool-box,
