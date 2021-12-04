@@ -13,13 +13,16 @@
 	<script src="./scripts/home.js" defer></script>
 	<title>2d Minecraft Game - Home</title>
 </head>
-<body>
-	<Main>
+<body class="flex-col">
+	<section class="main-container flex-col">
 		<header>
-			<h1>2D MINECRAFT</h1>
-			<ul>
+			<h1>
+			</h1>
+			<ul class="menu">
 				<li>
-					<a href="">Start New Game</a>
+					<a href="">
+						Start New Game
+					</a>
 				</li>
 				<li>
 					Load
@@ -28,11 +31,13 @@
 					Save
 				</li>
 				<li>
-					Instructions
+					<button class="menu-instructions-btn">
+						Instructions
+					</button>
 				</li>
 			</ul>
 		</header>
-		<div class="instructions">
+		<div class="instructions hide">
 			<H2>
 				Description
 			</H2>
@@ -57,7 +62,10 @@
 					Axe: Trees
 				</li>
 			</ul>
+			<button class="instructions-return">
+				Return
+			</button>
 		</div>
-	</Main>
+	</section>
 </body>
 </html>

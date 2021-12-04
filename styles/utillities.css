@@ -23,3 +23,19 @@
 	justify-content: space-evenly;
 	align-items: center;
 }
+
+ul{
+	list-style: none;
+}
+
+a{
+	text-decoration: none;
+}
+
+a:visited{
+	color: unset;
+}
+
+.hide{
+	display: none;
+}
