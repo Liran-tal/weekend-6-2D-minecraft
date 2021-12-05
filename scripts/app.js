@@ -1,84 +1,49 @@
 "use strict";
 
-// const gameBoard = document.querySelector("#game-board");
-// const toolBox = document.querySelector("#tool-box");
-// const inventory = document.querySelector('.inventory');
-// const INVENTORY_CAPACITY = 8;
-// const messageBox = document.querySelector('.message-box');
-// const messageBoxText = document.querySelector('.message-box-text');
-// const messageBoxButton = document.querySelector('.message-box-btn');
+const materialArr = [
+	null,
+	"tree",
+	"leaves",
+	"rock",
+	"ground",
+	"grass",
+	"cloud"
+]
 
-// let activeTool = undefined;
-// let activeInventoryMaterial = undefined;
-// let activeBoardMaterial = undefined;
-// let inventoryOccupied = 0;
-
-const gameElements = {
-	gameBoard: document.querySelector("#game-board"),
-	toolBox: document.querySelector("#tool-box"),
-	inventory: document.querySelector('.inventory'),
-	INVENTORY_CAPACITY: 8,
-	messageBox: document.querySelector('.message-box'),
-	messageBoxText: document.querySelector('.message-box-text'),
-	messageBoxButton: document.querySelector('.message-box-btn'),
-	
-	activeTool: undefined,
-	activeInventoryMaterial: undefined,
-	activeBoardMaterial: undefined,
-	inventoryOccupied: 0,
-	
-	materialArr: [
-		null,
-		"tree",
-		"leaves",
-		"rock",
-		"ground",
-		"grass",
-		"cloud"
-	],
-
-	materialToolMatch: {
-		"tree": 'axe',
-		"leaves": 'axe',
-		"rock": 'pickaxe',
-		"ground": 'shovel',
-		"grass": 'shovel',
-		"cloud": ''
-	}
+const materialToolMatch = {
+	"tree": 'axe',
+	"leaves": 'axe',
+	"rock": 'pickaxe',
+	"ground": 'shovel',
+	"grass": 'shovel',
+	"cloud": ''
 }
 
-// const materialArr = [
-// 	null,
-// 	"tree",
-// 	"leaves",
-// 	"rock",
-// 	"ground",
-// 	"grass",
-// 	"cloud"
-// ]
+const gameBoard = document.querySelector("#game-board");
+const toolBox = document.querySelector("#tool-box");
+const inventory = document.querySelector('.inventory');
+const INVENTORY_CAPACITY = 8;
+const messageBox = document.querySelector('.message-box');
+const messageBoxText = document.querySelector('.message-box-text');
+const messageBoxButton = document.querySelector('.message-box-btn');
 
-// const materialToolMatch = {
-// 	"tree": 'axe',
-// 	"leaves": 'axe',
-// 	"rock": 'pickaxe',
-// 	"ground": 'shovel',
-// 	"grass": 'shovel',
-// 	"cloud": ''
-// }
+let activeTool = undefined;
+let activeInventoryMaterial = undefined;
+let activeBoardMaterial = undefined;
+let inventoryOccupied = 0;
 
-function main() {
-	
-	gameBoard.addEventListener('click', gameBoardHandler);
-	toolBox.addEventListener('click', toolHandler);
-	inventory.addEventListener('click', handleInventory);
 
-	messageBoxButton.addEventListener('click', () => {
-		messageBox.classList.add('hide');
-	})
-}
+gameBoard.addEventListener('click', gameBoardHandler);
+toolBox.addEventListener('click', toolHandler);
+inventory.addEventListener('click', handleInventory);
 
-function createMatrix(columns, rows) {
-	const gameBoardMatrix = [
+messageBoxButton.addEventListener('click', () => {
+	messageBox.classList.add('hide');
+})
+
+// *** Game board ***
+
+const gameBoardMatrix = [
 		//21*21
 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -101,28 +66,21 @@ function createMatrix(columns, rows) {
 		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
 		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
 		[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-	];
-	return gameBoardMatrix;
-}
-	
-	// *** Game board ***
+];
 
-function setGameBoard(columns, rows) {
-	gameBoardMatrix = createMatrix(columns, rows);
-	gameBoardMatrix.forEach((row, yIndex) => {
-		row.forEach((column, xIndex) => {
-			const currentPositionId = gameBoardMatrix[yIndex][xIndex];
-			const block = document.createElement("div");
-			if (currentPositionId !== 0) {
-				block.classList.add(materialArr[currentPositionId]);
-				block.dataset.material = materialArr[currentPositionId];
-			}
-			block.dataset.xIndex = xIndex;
-			block.dataset.yIndex = yIndex;
-			gameBoard.appendChild(block);
-		})
-	});
-}
+gameBoardMatrix.forEach((row, yIndex) => {
+	row.forEach((column, xIndex) => {
+		const currentPositionId = gameBoardMatrix[yIndex][xIndex];
+		const block = document.createElement("div");
+		if (currentPositionId !== 0) {
+			block.classList.add(materialArr[currentPositionId]);
+			block.dataset.material = materialArr[currentPositionId];
+		}
+		block.dataset.xIndex = xIndex;
+		block.dataset.yIndex = yIndex;
+		gameBoard.appendChild(block);
+	})
+});
 
 function gameBoardHandler({target}){
 	if (target !== gameBoard) {
@@ -191,23 +149,21 @@ function blinkWrongTool(tool) {
 
 // *** Inventory ***
 
-function createInventory() {
-	const materialsInventory = []; 
-	const num_columns = (INVENTORY_CAPACITY > 15) ? 3 : 2;
-	const num_rows = Math.floor(INVENTORY_CAPACITY / num_columns);
-	for (let yIndex = 1; yIndex <= num_rows; ++ yIndex){
-		for (let xIndex = 1; xIndex <= num_columns; ++ xIndex){
-			const item = document.createElement('div');
-			item.classList.add("inventory-item");
-			item.dataset.material = '';
-			item.dataset.xIndex = xIndex;
-			item.dataset.yIndex = yIndex;
-			materialsInventory.push(item);
-			inventory.append(item);
-		}
+const materialsInventory = [];
+const num_columns = (INVENTORY_CAPACITY > 15) ? 3 : 2;
+const num_rows = Math.floor(INVENTORY_CAPACITY / num_columns);
+for (let yIndex = 1; yIndex <= num_rows; ++ yIndex){
+	for (let xIndex = 1; xIndex <= num_columns; ++ xIndex){
+		const item = document.createElement('div');
+		item.classList.add("inventory-item");
+		item.dataset.material = '';
+		item.dataset.xIndex = xIndex;
+		item.dataset.yIndex = yIndex;
+		materialsInventory.push(item);
+		inventory.append(item);
 	}
-	const materialsInventory = [...inventory.children];
 }
+
 	
 function handleInventory({target}) {
 	if (target !== inventory){
